@@ -1,0 +1,15 @@
+00:00 Intro
+00:10 Book update: C++ Bookcamp
+03:22 Overload Journal 174
+06:12 Paper: do expressions (update)
+07:59 Sanitizer-Eliding Compiler Optimizations
+12:29 Cpp2 Spring update
+24:33 What if exceptions were zero-cost
+29:43 GCC 13.1
+30:59 C compiler flags during development
+32:43 match(it)
+37:39 Clang 16
+39:00 Boost 1.82
+40:43 What happens before main()
+41:50 Operator new sounds better than malloc
+47:38 Mastodon
