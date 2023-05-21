@@ -1,31 +1,49 @@
 import argparse
+import re
+
+# '00:00 Intro' -> '00:00 Intro', '00', '00', 'Intro'
+youtube_line_regex = re.compile(r"^(\d+):(\d+)\s+(.*)$")
 
 
-def convert(a_line):
+def convert(lines, fmt):
     """
-    Converts YouTube-style chapter line into Audacity-style label line
-    :param a_line: YouTube-style chapter line
-    :return: Audacity-style label line
+    Converts YouTube-style chapter lines into other formats
+    :param lines: All lines from the input file in YouTube chapter format (MM:SS Title)
+    :param fmt: Output format: audacity, csv
+    :return: Converted chapter lines
     """
-    return a_line
+    for line in lines:
+        match = youtube_line_regex.match(line)
+        if match is None:
+            print(f"Invalid input line: '{line}'")
+            exit(-1)
+        mins = match[1]
+        secs = match[2]
+        minutes = float(mins)
+        seconds = float(secs)
+        timestamp = minutes*60 + seconds
+        label = match[3]
+        out_line = ''
+        if fmt == 'audacity':
+            out_line = f"{timestamp:.6f}\t{timestamp:.6f}\t{label}\n"
+        elif fmt == 'csv':
+            out_line = f"{label},{mins}:{secs}\n"
+        else:
+            print(f"Unknown output format: {fmt}")
+            exit(-2)
+        print(out_line, end='')
 
 
 if __name__ == '__main__':
-    print('Chapters: convert YouTube chapters to Audacity labels')
-    print("Copyright (C) 2023 Gleb Dolgich. All rights reserved.")
-    print("Usage: chapters.py youtube.txt [-o audacity.txt]")
-
-    parser = argparse.ArgumentParser(prog='Chapters', description='Converts YouTube markers to Audacity labels')
+    parser = argparse.ArgumentParser(prog='chapters',
+                                     description='Converts YouTube markers to other formats',
+                                     epilog='Copyright (C) 2023 Gleb Dolgich. All rights reserved.')
     parser.add_argument('input', help='Input file containing YouTube chapter markers')
-    parser.add_argument('-o', '--output', help='Output file name (uses standard output if none)')
+    parser.add_argument('-f', '--format', help='Target format: audacity, csv (default)', default='csv')
+    parser.add_argument('-o', '--output', help='Output file name (otherwise uses standard output)')
 
     args = parser.parse_args()
 
-    print(f"Input file: {args.input}")
-    if args.output is not None:
-        print(f"Output file: {args.output}")
-
-    with open(args.input) as input_file:
-        for youtube_line in input_file:
-            audacity_line = convert(youtube_line)
-            print(audacity_line, end='')
+    with open(args.input) as f:
+        all_lines = f.readlines()
+        convert(all_lines, args.format)
