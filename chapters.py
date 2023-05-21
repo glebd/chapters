@@ -48,5 +48,5 @@ if __name__ == '__main__':
     with open(args.input) as f:
         all_lines = f.readlines()
         converted_lines = convert(all_lines, args.format)
-        for line in converted_lines:
-            print(line, end='')
+    for line in converted_lines:
+        print(line, end='')
