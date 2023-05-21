@@ -12,6 +12,7 @@ def convert(lines, fmt):
     :param fmt: Output format: audacity, csv
     :return: Converted chapter lines
     """
+    out_lines = []
     for line in lines:
         match = youtube_line_regex.match(line)
         if match is None:
@@ -30,7 +31,8 @@ def convert(lines, fmt):
         else:
             print(f"Unknown output format: {fmt}")
             exit(-2)
-        print(out_line, end='')
+        out_lines.append(out_line)
+    return out_lines
 
 
 if __name__ == '__main__':
@@ -45,4 +47,6 @@ if __name__ == '__main__':
 
     with open(args.input) as f:
         all_lines = f.readlines()
-        convert(all_lines, args.format)
+        converted_lines = convert(all_lines, args.format)
+        for line in converted_lines:
+            print(line, end='')
