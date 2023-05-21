@@ -1,5 +1,15 @@
 import argparse
 
+
+def convert(a_line):
+    """
+    Converts YouTube-style chapter line into Audacity-style label line
+    :param a_line: YouTube-style chapter line
+    :return: Audacity-style label line
+    """
+    return a_line
+
+
 if __name__ == '__main__':
     print('Chapters: convert YouTube chapters to Audacity labels')
     print("Copyright (C) 2023 Gleb Dolgich. All rights reserved.")
@@ -12,7 +22,10 @@ if __name__ == '__main__':
     args = parser.parse_args()
 
     print(f"Input file: {args.input}")
-    if args.output is None:
-        print("Output: stdout")
-    else:
+    if args.output is not None:
         print(f"Output file: {args.output}")
+
+    with open(args.input) as input_file:
+        for youtube_line in input_file:
+            audacity_line = convert(youtube_line)
+            print(audacity_line, end='')
