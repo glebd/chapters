@@ -23,7 +23,6 @@ def convert(lines, fmt):
         seconds = float(secs)
         timestamp = minutes*60 + seconds
         label = match[3]
-        out_line = ''
         if fmt == 'audacity':
             out_line = f"{timestamp:.6f}\t{timestamp:.6f}\t{label}\n"
         elif fmt == 'csv':
